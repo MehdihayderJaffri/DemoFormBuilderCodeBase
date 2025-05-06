@@ -1,0 +1,241 @@
+<template>
+    <!-- Center - S: slds-container_small slds-container_center slds-p-around_medium -->
+    <!-- Center - M: slds-container_medium slds-container_center slds-p-around_medium -->
+    <!-- Center - L: slds-container_large slds-container_center slds-p-around_medium -->
+    <!-- Center - XL: slds-container_x-large slds-container_center slds-p-around_medium -->
+    
+    <div class="slds-container_medium slds-container_center">
+        
+        
+
+        <lightning-card>
+
+            <div class="slds-p-horizontal_none">
+                <img src="https://www.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg" alt="Header Image" class="slds-align_absolute-center slds-size_full" />
+            </div>
+            
+
+            <!-- <lightning-carousel-image
+                src = "https://www.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg"
+                header = "First Card"
+                description = "First card description."
+                alternative-text = "First card accessible description."
+                href = "https://www.example.com">
+            </lightning-carousel-image> -->
+
+            <!--
+                Text Size Small: slds-text-heading_small
+                Text Size Medium: slds-text-heading_medium
+                Text Size Large: slds-text-heading_large
+
+                Text Transform Uppercase: slds-text-title_caps  -> Uppercase not working if I use Heading classes
+
+                Text Align Left: slds-text-align_left
+                Text Align Right: slds-text-align_right
+                Text Align Center: slds-text-align_center
+            -->
+            <h1 class="slds-p-around_small slds-text-heading_large slds-text-align_left">
+                <lightning-icon icon-name="utility:connected_apps" size="small"></lightning-icon>
+                {formSchema.title}
+            </h1>
+
+            <!-- <template if:true={hasErrors}>
+                <div class="slds-notify_container slds-is-relative">
+                    <div class="slds-notify slds-notify_toast slds-theme_error" role="status">
+                        <span class="slds-assistive-text">error</span>
+                        
+                        <lightning-icon 
+                            icon-name="utility:error" 
+                            alternative-text="Error" 
+                            title="Error" 
+                            size="large" 
+                            variant="inverse"
+                            class="slds-m-right_medium">
+                        </lightning-icon>
+            
+                        <div class="slds-notify__content">
+                            <p>Please fix {errorMessages.length} errors!</p>
+                            <ul class="slds-p-left_large slds-text-heading_medium">
+                                <template for:each={errorMessages} for:item="error">
+                                    <li key={error.key}>{error.message}</li>
+                                </template>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </template> -->
+
+            <!-- slds-p-around_medium -->
+            <div class="slds-p-around_small"> 
+                <template for:each={fieldList} for:item="fieldSection">
+                    <div key={fieldSection.name}>
+
+                        <!-- Section Block Start -->
+                        <template if:true={fieldSection.isSection}>
+                            
+                            <!-- If it's a Horizontal/Group -->
+                            <template if:false={fieldSection.isVerticalLayout}>
+                                <!-- slds-m-bottom_small -->
+                                <div class="slds-p-top_small">
+                                    <!-- slds-m-bottom_small -->
+                                    <h3 class="slds-text-heading_small ">{fieldSection.sectionTitle}</h3>   
+
+                                    <div class="slds-grid slds-gutters slds-wrap">
+                                        <template for:each={fieldSection.fields} for:item="field">
+                                            <div key={field.name} class={fieldSection.columns}>
+                                                <template if:true={field.isText}>
+                                                    <lightning-input
+                                                        name={field.name}
+                                                        label={field.label}
+                                                        type={field.type}
+                                                        value={field.value}
+                                                        onchange={handleInputChange}
+                                                        required={field.required}
+                                                        field-level-help={field.helpText}
+                                                        placeholder={field.placeholder}
+                                                    ></lightning-input>
+                                                </template>
+
+                                                <template if:true={field.isPicklist}>
+                                                    <lightning-combobox
+                                                        name={field.name}
+                                                        label={field.label}
+                                                        value={field.value}
+                                                        options={field.options}
+                                                        onchange={handleInputChange}
+                                                        required={field.required}
+                                                        field-level-help={field.helpText}
+                                                        placeholder={field.placeholder}
+                                                    ></lightning-combobox>
+                                                </template>
+
+                                                <template if:true={field.isTextarea}>
+                                                    <lightning-textarea
+                                                        name={field.name}
+                                                        label={field.label}
+                                                        value={field.value}
+                                                        onchange={handleInputChange}
+                                                        required={field.required}
+                                                        field-level-help={field.helpText}
+                                                        placeholder={field.placeholder}
+                                                        rows={field.rows}
+                                                    ></lightning-textarea>
+                                                </template>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </template>
+
+                            <!-- If it's a Vertical/Group -->
+                            <template if:true={fieldSection.isVerticalLayout}>
+                                <!-- slds-m-bottom_small -->
+                                <div class="slds-p-top_small">
+                                    <!-- slds-m-bottom_small -->
+                                    <h3 class="slds-text-heading_small ">{fieldSection.sectionTitle}</h3>
+
+                                    <div class="slds-grid slds-gutters slds-wrap">
+                                        <template for:each={fieldSection.fields} for:item="field">
+                                            <div key={field.name} class="slds-col slds-size_1-of-1">
+                                                <template if:true={field.isText}>
+                                                    <lightning-input
+                                                        name={field.name}
+                                                        label={field.label}
+                                                        type={field.type}
+                                                        value={field.value}
+                                                        onchange={handleInputChange}
+                                                        required={field.required}
+                                                        field-level-help={field.helpText}
+                                                        placeholder={field.placeholder}
+                                                    ></lightning-input>
+                                                </template>
+
+                                                <template if:true={field.isPicklist}>
+                                                    <lightning-combobox
+                                                        name={field.name}
+                                                        label={field.label}
+                                                        value={field.value}
+                                                        options={field.options}
+                                                        onchange={handleInputChange}
+                                                        required={field.required}
+                                                        field-level-help={field.helpText}
+                                                        placeholder={field.placeholder}
+                                                    ></lightning-combobox>
+                                                </template>
+
+                                                <template if:true={field.isTextarea}>
+                                                    <lightning-textarea
+                                                        name={field.name}
+                                                        label={field.label}
+                                                        value={field.value}
+                                                        onchange={handleInputChange}
+                                                        required={field.required}
+                                                        field-level-help={field.helpText}
+                                                        placeholder={field.placeholder}
+                                                        rows={field.rows}
+                                                    ></lightning-textarea>
+                                                </template>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </template>
+
+                        </template>
+                        <!-- Section Block End -->
+
+                        <!-- If it's a regular field -->
+                        <template if:false={fieldSection.isSection} class="slds-p-around_small">
+                            <template if:true={fieldSection.isText}>
+                                <lightning-input
+                                    name={fieldSection.name}
+                                    label={fieldSection.label}
+                                    type={fieldSection.type}
+                                    value={fieldSection.value}
+                                    onchange={handleInputChange}
+                                    required={fieldSection.required}
+                                    field-level-help={fieldSection.helpText}
+                                    placeholder={fieldSection.placeholder}
+                                ></lightning-input>
+                            </template>
+
+                            <template if:true={fieldSection.isPicklist}>
+                                <lightning-combobox
+                                    name={fieldSection.name}
+                                    label={fieldSection.label}
+                                    value={fieldSection.value}
+                                    options={fieldSection.options}
+                                    onchange={handleInputChange}
+                                    required={fieldSection.required}
+                                    field-level-help={fieldSection.helpText}
+                                    placeholder={fieldSection.placeholder}
+                                ></lightning-combobox>
+                            </template>
+
+                            <template if:true={fieldSection.isTextarea}>
+                                <lightning-textarea
+                                    name={fieldSection.name}
+                                    label={fieldSection.label}
+                                    value={fieldSection.value}
+                                    onchange={handleInputChange}
+                                    required={fieldSection.required}
+                                    field-level-help={fieldSection.helpText}
+                                    placeholder={fieldSection.placeholder}
+                                    rows={fieldSection.rows}
+                                ></lightning-textarea>
+                            </template>
+                        </template>
+                    </div>
+                </template>
+
+                <br />
+                <lightning-button
+                    label="Submit"
+                    variant="success"
+                    onclick={handleSubmit}
+                    class="slds-m-top_large"
+                ></lightning-button>
+            </div>
+        </lightning-card>
+    </div>
+</template>
